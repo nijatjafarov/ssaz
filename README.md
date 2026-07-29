@@ -69,7 +69,7 @@ engine = AzSearchEngine(embedder="bge-m3", backend="memory")
 
 ## Architecture
 
-![SSAZ architecture](docs/architecture.svg)
+![SSAZ architecture](docs/architecture.png)
 
 The diagram follows one article of the Constitution and one question all the
 way through. Text is normalised, cut on its own markers, tagged, embedded, and
