@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ssaz"
+version = "0.1.0"
+description = "SAZ: Semantic search infrastructure for the Azerbaijani language"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Nijat Jafarov" }]
+keywords = [
+    "azerbaijani",
+    "semantic-search",
+    "information-retrieval",
+    "nlp",
+    "rag",
+    "low-resource-languages",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Azerbaijani",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
+]
+# The base install covers the default pipeline out of the box:
+# 'requests' powers the API embedders (OpenAI default, plus Gemini,
+# Qwen3, HF Inference) and 'pinecone' powers the default vector store.
+# Everything else in the core (chunking, normalization, transliteration,
+# the in-memory index, loaders, evaluation) is standard library only.
+# Heavy local models and alternative stores remain opt-in extras.
+dependencies = [
+    "requests>=2.31",
+    "pinecone>=5.0",
+    # The pinecone SDK needs a modern typing-extensions at import time;
+    # environments carrying a stale copy break the install/first import.
+    # Declaring the floor here makes pip upgrade it alongside ssaz.
+    "typing-extensions>=4.8",
+]
+
+[project.optional-dependencies]
+dense = ["sentence-transformers>=2.7", "torch"]
+chroma = ["chromadb>=0.5"]
+all = ["sentence-transformers>=2.7", "torch", "chromadb>=0.5"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+ssaz = "ssaz.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/nijatjafarov/ssaz"
+Issues = "https://github.com/nijatjafarov/ssaz/issues"
+
+[tool.setuptools.packages.find]
+include = ["ssaz*"]
+
+[tool.setuptools.package-data]
+ssaz = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
